@@ -30,12 +30,12 @@ public class Manager : MonoBehaviour
         _keywordDictionary = new Dictionary<string, KeywordAction>();
 
         _keywordDictionary.Add("Stand idle", StandIdleCommand);
-        _keywordDictionary.Add("Show me a backflip", BackflipCommand);
-        _keywordDictionary.Add("How do I block", BlockingCommand);
-        _keywordDictionary.Add("How about kick", KickCommand);
-        _keywordDictionary.Add("I want to learn Capoeira", CapoeiraCommand);
-        _keywordDictionary.Add("I want to learn Samba Dancing", SambaDanceCommand);
-        _keywordDictionary.Add("Thank you very much", BowCommand);
+        _keywordDictionary.Add("Backflip", BackflipCommand);
+        _keywordDictionary.Add("Block", BlockingCommand);
+        _keywordDictionary.Add("Kick", KickCommand);
+        _keywordDictionary.Add("Capoeira", CapoeiraCommand);
+        _keywordDictionary.Add("Samba Dance", SambaDanceCommand);
+        _keywordDictionary.Add("Bow", BowCommand);
 
 
         _keywordRecognizer = new KeywordRecognizer(_keywordDictionary.Keys.ToArray());
