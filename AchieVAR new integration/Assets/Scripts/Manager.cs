@@ -9,12 +9,15 @@ using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
+using UnityEngine.XR.WSA;
+
 public class Manager : MonoBehaviour
 {
     private UnityEngine.XR.WSA.Input.GestureRecognizer _gestureRecognizer;
     private KeywordRecognizer _keywordRecognizer;
     public GameObject _character;
     public Animator _characterAnimator;
+    public Animator sceneAnimator;
     private Boolean _characterExist = false;
 
     delegate void KeywordAction(PhraseRecognizedEventArgs args);
@@ -36,7 +39,7 @@ public class Manager : MonoBehaviour
         _keywordDictionary.Add("I want to learn Capoeira", CapoeiraCommand);
         _keywordDictionary.Add("I want to learn dancing", SambaDanceCommand);
         _keywordDictionary.Add("Thank you very much", BowCommand);
-
+        _keywordDictionary.Add("Hello", OpeningScene);
 
         _keywordRecognizer = new KeywordRecognizer(_keywordDictionary.Keys.ToArray());
         _keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
@@ -61,16 +64,26 @@ public class Manager : MonoBehaviour
 
     private void Recognizer_TappedEvent(UnityEngine.XR.WSA.Input.InteractionSourceKind source, int tapCount, Ray headRay)
     {
-        RaycastHit hitInfo;
-
-        if (!_characterExist && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, Mathf.Infinity))
+        if (HolographicSettings.IsDisplayOpaque)
         {
-            GameObject character = Instantiate(_character, hitInfo.point, Quaternion.Euler(0, transform.eulerAngles.y + 180f, 0));
-            _characterAnimator = _character.GetComponent<Animator>();
-            _characterExist = true;
+            RaycastHit hitInfo;
 
-            Camera.main.gameObject.GetComponent<UnityEngine.XR.WSA.SpatialMappingRenderer>().enabled = false;
+            if (!_characterExist && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, Mathf.Infinity))
+            {
+                GameObject character = Instantiate(_character, hitInfo.point, Quaternion.Euler(0, transform.eulerAngles.y + 180f, 0));
+                _characterAnimator = _character.GetComponent<Animator>();
+                _characterExist = true;
+
+                Camera.main.gameObject.GetComponent<UnityEngine.XR.WSA.SpatialMappingRenderer>().enabled = false;
+            }
         }
+        
+    }
+
+    private void OpeningScene(PhraseRecognizedEventArgs args)
+    {
+        sceneAnimator.SetTrigger("Start");
+        //_characterAnimator.Play("Idle", -1, 0f);
     }
 
     private void StandIdleCommand(PhraseRecognizedEventArgs args)
