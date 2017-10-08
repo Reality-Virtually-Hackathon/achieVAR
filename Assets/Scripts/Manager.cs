@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.VR.WSA.Input;
+
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
 public class Manager : MonoBehaviour
 {
-    private GestureRecognizer _gestureRecognizer;
+    private UnityEngine.XR.WSA.Input.GestureRecognizer _gestureRecognizer;
     private KeywordRecognizer _keywordRecognizer;
     public GameObject _character;
-    private Animator _characterAnimator;
+    public Animator _characterAnimator;
     private Boolean _characterExist = false;
 
     delegate void KeywordAction(PhraseRecognizedEventArgs args);
@@ -22,20 +22,20 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
-        _gestureRecognizer = new GestureRecognizer();
-        _gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
+        _gestureRecognizer = new UnityEngine.XR.WSA.Input.GestureRecognizer();
+        _gestureRecognizer.SetRecognizableGestures(UnityEngine.XR.WSA.Input.GestureSettings.Tap);
         _gestureRecognizer.TappedEvent += Recognizer_TappedEvent;
         _gestureRecognizer.StartCapturingGestures();
 
         _keywordDictionary = new Dictionary<string, KeywordAction>();
 
         _keywordDictionary.Add("Stand idle", StandIdleCommand);
-        _keywordDictionary.Add("Backflip", BackflipCommand);
-        _keywordDictionary.Add("Block", BlockingCommand);
-        _keywordDictionary.Add("Kick", KickCommand);
-        _keywordDictionary.Add("Capoeira", CapoeiraCommand);
-        _keywordDictionary.Add("Samba Dance", SambaDanceCommand);
-        _keywordDictionary.Add("Bow", BowCommand);
+        _keywordDictionary.Add("Show me a backflip", BackflipCommand);
+        _keywordDictionary.Add("How do I block", BlockingCommand);
+        _keywordDictionary.Add("How about kick", KickCommand);
+        _keywordDictionary.Add("I want to learn Capoeira", CapoeiraCommand);
+        _keywordDictionary.Add("I want to learn dancing", SambaDanceCommand);
+        _keywordDictionary.Add("Thank you very much", BowCommand);
 
 
         _keywordRecognizer = new KeywordRecognizer(_keywordDictionary.Keys.ToArray());
@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
 
     private void OnDestroy()
     {
-        _gestureRecognizer.TappedEvent -= Recognizer_TappedEvent;
+        //_gestureRecognizer.TappedEvent -= Recognizer_TappedEvent;
         _keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
     }
 
@@ -59,7 +59,7 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void Recognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
+    private void Recognizer_TappedEvent(UnityEngine.XR.WSA.Input.InteractionSourceKind source, int tapCount, Ray headRay)
     {
         RaycastHit hitInfo;
 
@@ -69,42 +69,56 @@ public class Manager : MonoBehaviour
             _characterAnimator = _character.GetComponent<Animator>();
             _characterExist = true;
 
-            Camera.main.gameObject.GetComponent<UnityEngine.VR.WSA.SpatialMappingRenderer>().enabled = false;
+            Camera.main.gameObject.GetComponent<UnityEngine.XR.WSA.SpatialMappingRenderer>().enabled = false;
         }
     }
 
     private void StandIdleCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Idle", -1, 0f);
+        print("Idle");
+        _characterAnimator.SetTrigger("Idle");
+        //_characterAnimator.Play("Idle", -1, 0f);
     }
 
     private void BackflipCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Backflip", -1, 0f);
+        print("backflip");
+        _characterAnimator.SetTrigger("Backflip");
+
+        //_characterAnimator.Play("Backflip", -1, 0f);
     }
 
     private void BlockingCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Blocking", -1, 0f);
+        _characterAnimator.SetTrigger("Block");
+
+        //_characterAnimator.Play("Blocking", -1, 0f);
     }
 
     private void KickCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Inside Crescent Kick", -1, 0f);
+        _characterAnimator.SetTrigger("Kick");
+
+        //_characterAnimator.Play("Inside Crescent Kick", -1, 0f);
     }
 
     private void CapoeiraCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Capoeira", -1, 0f);
+        _characterAnimator.SetTrigger("Capoeira");
+
+        //_characterAnimator.Play("Capoeira", -1, 0f);
     }
 
     private void SambaDanceCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Samba Dancing", -1, 0f);
+        _characterAnimator.SetTrigger("Samba");
+        //_characterAnimator.Play("Samba Dancing", -1, 0f);
     }
 
     private void BowCommand(PhraseRecognizedEventArgs args)
     {
-        _characterAnimator.Play("Quick Formal Bow", -1, 0f);
+        _characterAnimator.SetTrigger("Bow");
+
+        //_characterAnimator.Play("Quick Formal Bow", -1, 0f);
     }
 }
