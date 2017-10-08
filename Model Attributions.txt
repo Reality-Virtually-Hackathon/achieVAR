@@ -1,0 +1,7 @@
+## Model Attributions
+
+ - [*Free* Quick terrain test](https://sketchfab.com/models/b0ad92e85bf242d9bf24009a40b4e4d2) by [Krzysztof Teper](https://sketchfab.com/tepcio) is licensed under [CC Attribution](https://creativecommons.org/licenses/by/4.0/)
+
+- [Tahiti Beach](https://sketchfab.com/models/80310f92bc5c45b3a1a539dd09f54cc8#) by [Matt](https://sketchfab.com/lablatte) is licensed under [CC Attribution](https://creativecommons.org/licenses/by/4.0/)
+
+- [Playground]()https://sketchfab.com/models/0d87a62ea92a42f4bcbe2fc8c883aa5f# by [bg3d](https://sketchfab.com/bg3d) is licensed under [CC Attribution](https://creativecommons.org/licenses/by/4.0/)
